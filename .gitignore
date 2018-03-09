@@ -88,6 +88,9 @@ fabric.properties
 ### Gradle template
 .gradle
 /build/
+/api/build/
+/docker/build/
+/testing/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
