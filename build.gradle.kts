@@ -2,7 +2,7 @@
 
 plugins {
     base
-    id("org.jetbrains.kotlin.jvm") version "1.2.20"
+    id("org.jetbrains.kotlin.jvm") version "1.2.30"
 }
 
 

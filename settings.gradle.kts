@@ -1,5 +1,6 @@
 rootProject.name = "asciilab"
 
+include("admin")
 include("api")
 include("docker")
 include("testing")

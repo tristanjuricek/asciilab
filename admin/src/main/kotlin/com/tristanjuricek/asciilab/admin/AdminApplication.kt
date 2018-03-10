@@ -1,6 +1,6 @@
-package com.tristanjuricek.asciilab
+package com.tristanjuricek.asciilab.admin
 
-import com.tristanjuricek.asciilab.web.Routes
+import com.tristanjuricek.asciilab.admin.web.Routes
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.context.support.beans
 import org.springframework.http.server.reactive.HttpHandler
@@ -11,7 +11,7 @@ import org.springframework.web.server.adapter.WebHttpHandlerBuilder
 import reactor.ipc.netty.http.server.HttpServer
 import reactor.ipc.netty.tcp.BlockingNettyContext
 
-class Application {
+class APIApplication {
 
     private val httpHandler: HttpHandler
 
@@ -52,6 +52,6 @@ class Application {
 }
 
 fun main(args: Array<String>) {
-    Application().startAndAwait()
+    APIApplication().startAndAwait()
 }
 

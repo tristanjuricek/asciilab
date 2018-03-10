@@ -1,4 +1,4 @@
-package com.tristanjuricek.asciilab.web
+package com.tristanjuricek.asciilab.api.web
 
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.ServerResponse.ok

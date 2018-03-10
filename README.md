@@ -16,18 +16,18 @@ The basic idea is to have a Git host push things to an API, which then updates..
      | GitHub |     |              |filesystem (html, PDF builds)|   |
      +--------+     +----------+   +-----------------------------+   |
      +-----------+-->   nginx  |   +--------------+                  |
-     | GitLab |  |  +----------+   |  git repos   |                  |
-     +--------+  |  |              +--------------+                  |
-                 |  |              +---------------------+           |
-                 |  |              | API server (kotlin) |           |
-                 |  |              +---------------------+           |
+     | GitLab |  |  +----------+   |  git repos   |                  | +------------+
+     +--------+  |  |              +--------------+                  | |            |
+                 |  |              +---------------------+           | | PostgreSQL |
+                 |  |              | API server (kotlin) |           | |            |
+                 |  |              +---------------------+           | +------------+
                  |  |              +--------------------+            |
                  |  |              | Admin App          |            |  
                  |  |              +--------------------+            |
                  |  |                                                |
     Peeps+-------+  +------------------------------------------------+
 
-That whole bit on the right should be a deployable Docker container, as a starting point.
+That whole bit on the right should be a deployable Docker container, with the option for another one for PostgreSQL.
 
 ### API Server
 
@@ -40,8 +40,6 @@ NOTE: We may want options for background processes to handle some operations.
 ### Possible: Admin Application
 
 We may want to configure a little web application that provides the ability to initialize and administer the server. 
-
-TODO: Determine the database. Need some minimal functions, hopefully nothing too heavyweight. 
 
 
 ## Product Concepts
@@ -67,7 +65,7 @@ Now, this may be too simple, so we can add a "descriptor" that allows you to sta
 
 ## TO DO
 
-1. Create the open source framework
-2. Validate that yep, we can spin up a docker container
-3. 
+- Setup "hello" admin page
+- Add CRUD APIs for repo registration 
+- Setup a client from admin -> api
 

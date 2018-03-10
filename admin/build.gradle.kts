@@ -19,7 +19,7 @@ plugins {
 extra["kotlin.version"] = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 
 application {
-    mainClassName = "com.tristanjuricek.asciilab.api.APIApplicationKt"
+    mainClassName = "com.tristanjuricek.asciilab.admin.AdminApplicationKt"
 }
 
 tasks {
