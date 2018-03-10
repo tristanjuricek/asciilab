@@ -65,7 +65,8 @@ Now, this may be too simple, so we can add a "descriptor" that allows you to sta
 
 ## TO DO
 
-- Setup "hello" admin page
 - Add CRUD APIs for repo registration 
-- Setup a client from admin -> api
+- Setup a client from admin -> api 
+- Add REPO admin page
+- 
 

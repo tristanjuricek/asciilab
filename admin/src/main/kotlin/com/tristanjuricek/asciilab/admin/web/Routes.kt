@@ -11,7 +11,7 @@ class Routes {
 
     fun router() = org.springframework.web.reactive.function.server.router {
         accept(MediaType.TEXT_HTML).nest {
-            GET("/hello", { _ -> ServerResponse.ok().syncBody("<html><body><h1>HI</h1></body></html>") })
+            GET("/hello", { _ -> ServerResponse.ok().render("HelloView") })
         }
     }
 }

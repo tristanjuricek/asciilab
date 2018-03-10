@@ -1,17 +1,15 @@
 package com.tristanjuricek.asciilab.admin
 
-import com.tristanjuricek.asciilab.admin.web.Routes
+import com.tristanjuricek.asciilab.admin.web.view.KotlinViewResolver
 import org.springframework.context.support.GenericApplicationContext
-import org.springframework.context.support.beans
 import org.springframework.http.server.reactive.HttpHandler
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
-import org.springframework.web.reactive.function.server.HandlerStrategies
-import org.springframework.web.reactive.function.server.RouterFunctions
+import org.springframework.web.reactive.config.ViewResolverRegistry
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder
 import reactor.ipc.netty.http.server.HttpServer
 import reactor.ipc.netty.tcp.BlockingNettyContext
 
-class APIApplication {
+class AdminApplication {
 
     private val httpHandler: HttpHandler
 
@@ -19,17 +17,13 @@ class APIApplication {
 
     private var nettyContext: BlockingNettyContext? = null
 
-    constructor(port: Int = 8080) {
-        val context = GenericApplicationContext()
-        beans {
-            bean<Routes>()
-            bean("webHandler") {
-                RouterFunctions.toWebHandler(ref<Routes>().router(), HandlerStrategies.withDefaults())
-            }
-            initialize(context)
-        }
-        context.refresh()
+    var context: GenericApplicationContext = GenericApplicationContext()
 
+    constructor(port: Int = 8080) {
+        context.apply {
+            beans(this).initialize(this)
+            refresh()
+        }
 
         server = HttpServer.create(port)
 
@@ -49,9 +43,10 @@ class APIApplication {
     fun stop() {
         nettyContext?.shutdown()
     }
+
 }
 
 fun main(args: Array<String>) {
-    APIApplication().startAndAwait()
+    AdminApplication().startAndAwait()
 }
 

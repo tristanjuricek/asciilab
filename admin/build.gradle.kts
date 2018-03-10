@@ -41,6 +41,7 @@ dependencyManagement {
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
+    compile("org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.9")
 
     compile("org.springframework:spring-webflux")
     compile("org.springframework:spring-context") {
