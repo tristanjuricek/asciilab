@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -6,6 +7,10 @@ buildscript {
     repositories {
         mavenCentral()
     }
+}
+
+repositories {
+    maven("https://dl.bintray.com/kotlin/exposed" )
 }
 
 plugins {
@@ -31,16 +36,25 @@ tasks {
     }
 }
 
+kotlin {
+    experimental.coroutines = Coroutines.ENABLE
+}
+
 dependencyManagement {
     imports {
         // Should use Spring IO platform milestone or release when available
         mavenBom("org.springframework.boot:spring-boot-dependencies:2.0.0.RELEASE")
+
     }
 }
 
 dependencies {
+    compile(project(":api.model"))
+
+    compile("org.jetbrains.exposed:exposed:0.10.1")
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
+    compile("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:0.22.5")
 
     compile("org.springframework:spring-webflux")
     compile("org.springframework:spring-context") {
