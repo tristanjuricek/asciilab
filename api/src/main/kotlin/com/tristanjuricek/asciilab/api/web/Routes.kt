@@ -13,3 +13,4 @@ class Routes(private val sourceHandler: SourceHandler) {
             DELETE("/sources/{id}", sourceHandler::deleteSource)
         }
     }
+}
