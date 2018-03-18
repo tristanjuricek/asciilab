@@ -5,8 +5,6 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.2.30"
 }
 
-
-
 allprojects {
 
     group = "com.tristanjuricek.asciilab"

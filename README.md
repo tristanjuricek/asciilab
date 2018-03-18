@@ -57,7 +57,6 @@ So I suspect as things grow we'll need to figure out where the bottlenecks are a
 
 TODO: Blog this decision - benefits vs problems
 
-
 #### Using blocking JDBC
 
 So, while all the APIs are going to be mostly reactive, it turns out that, well, Java hasn't really standardized on async APIs for JDBC.
@@ -104,7 +103,6 @@ Now, this may be too simple, so we can add a "descriptor" that allows you to sta
 
 ## TO DO
 
-- Setup a client from admin -> api 
 - Figure out where to initialize our tables
 - Create an integrated test suite that calls our stuff running against a PostgreSQL instance
 - Add REPO admin page
