@@ -79,6 +79,12 @@ We DO want to maintain some consistency, however that will be another project.
 
 TODO: Blog this decision - benefits vs problems
 
+#### Spring Boot's @ConfigProperties Doesn't Allow Idiomatic Usage
+
+See: https://github.com/spring-projects/spring-boot/issues/8762
+
+Personally, given that I'm _also_ not using AOP, this makes `@ConfigurationProperties` kind of a moot point.
+
 
 ## Product Concepts
 
@@ -103,8 +109,13 @@ Now, this may be too simple, so we can add a "descriptor" that allows you to sta
 
 ## TO DO
 
-- Figure out where to initialize our tables
 - Create an integrated test suite that calls our stuff running against a PostgreSQL instance
+- Get a Docker based development environment up
+- Add nginx proxy :
+    - /static (local files?)
+    - /admin (admin server)
+    - /api (api server)
+ 
 - Add REPO admin page
 - ... moar
 

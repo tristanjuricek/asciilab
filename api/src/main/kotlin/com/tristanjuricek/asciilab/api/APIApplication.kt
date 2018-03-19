@@ -1,12 +1,15 @@
 package com.tristanjuricek.asciilab.api
 
-import com.tristanjuricek.asciilab.api.web.Routes
+import com.tristanjuricek.asciilab.api.repository.schema.initializeSchema
+import org.apache.commons.dbcp2.DriverManagerConnectionFactory
+import org.apache.commons.dbcp2.PoolableConnection
+import org.apache.commons.dbcp2.PoolableConnectionFactory
+import org.apache.commons.dbcp2.PoolingDataSource
+import org.apache.commons.pool2.impl.GenericObjectPool
+import org.jetbrains.exposed.sql.Database
 import org.springframework.context.support.GenericApplicationContext
-import org.springframework.context.support.beans
 import org.springframework.http.server.reactive.HttpHandler
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
-import org.springframework.web.reactive.function.server.HandlerStrategies
-import org.springframework.web.reactive.function.server.RouterFunctions
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder
 import reactor.ipc.netty.http.server.HttpServer
 import reactor.ipc.netty.tcp.BlockingNettyContext
@@ -19,23 +22,40 @@ class APIApplication {
 
     private var nettyContext: BlockingNettyContext? = null
 
-    constructor(port: Int = 8080) {
-        val context = GenericApplicationContext()
-        beans {
-            bean<Routes>()
-            bean("webHandler") {
-                RouterFunctions.toWebHandler(ref<Routes>().router(), HandlerStrategies.withDefaults())
-            }
-            initialize(context)
-        }
-        context.refresh()
+    private val dataSource: PoolingDataSource<PoolableConnection>
 
+    constructor(port: Int = 8080) {
+        val context = GenericApplicationContext().apply {
+            beans(this).initialize(this)
+            refresh()
+        }
 
         server = HttpServer.create(port)
 
         httpHandler = WebHttpHandlerBuilder
                 .applicationContext(context)
                 .build()
+
+        initDatabaseDriver()
+        dataSource = createDataSource(context.getBean(DbConfig::class.java))
+        Database.connect(dataSource)
+
+        initializeSchema()
+    }
+
+    private fun initDatabaseDriver() {
+        Class.forName("org.postgresql.Driver")
+    }
+
+    private fun createDataSource(dbConfig: DbConfig): PoolingDataSource<PoolableConnection> {
+        val connectionFactory = DriverManagerConnectionFactory(dbConfig.uri, null)
+
+        val poolableConnectionFactory = PoolableConnectionFactory(connectionFactory, null)
+
+        val connectionPool = GenericObjectPool<PoolableConnection>(poolableConnectionFactory)
+        poolableConnectionFactory.pool = connectionPool
+
+        return PoolingDataSource(connectionPool)
     }
 
     fun start() {
@@ -48,6 +68,7 @@ class APIApplication {
 
     fun stop() {
         nettyContext?.shutdown()
+        dataSource.close()
     }
 }
 

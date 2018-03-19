@@ -18,7 +18,6 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
     id("com.github.johnrengelman.shadow") version "2.0.1"
     id("io.spring.dependency-management") version "1.0.4.RELEASE"
-//    id("org.junit.platform.gradle.plugin") version "1.0.2"
 }
 
 extra["kotlin.version"] = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
@@ -67,6 +66,9 @@ dependencies {
 
     compile("com.fasterxml.jackson.module:jackson-module-kotlin")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+    compile("org.postgresql:postgresql:42.2.2")
+    compile("org.apache.commons:commons-dbcp2:2.2.0")
 
     testCompile("io.projectreactor:reactor-test")
 
