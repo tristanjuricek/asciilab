@@ -19,7 +19,7 @@ class AdminApplication {
 
     var context: GenericApplicationContext = GenericApplicationContext()
 
-    constructor(port: Int = 8080) {
+    constructor(port: Int = 8082) {
         context.apply {
             beans(this).initialize(this)
             refresh()

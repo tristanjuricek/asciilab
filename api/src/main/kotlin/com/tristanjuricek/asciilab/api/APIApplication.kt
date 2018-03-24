@@ -24,7 +24,7 @@ class APIApplication {
 
     private val dataSource: PoolingDataSource<PoolableConnection>
 
-    constructor(port: Int = 8080) {
+    constructor(port: Int = 8081) {
         val context = GenericApplicationContext().apply {
             beans(this).initialize(this)
             refresh()

@@ -109,14 +109,16 @@ Now, this may be too simple, so we can add a "descriptor" that allows you to sta
 
 ## TO DO
 
-- Create an integrated test suite that calls our stuff running against a PostgreSQL instance
-- Get a Docker based development environment up
 - Add nginx proxy :
     - /static (local files?)
     - /admin (admin server)
     - /api (api server)
  
+
+
 - Add REPO admin page
 - ... moar
 
+
+Consider an integrated smoke testing suite.
 
