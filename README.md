@@ -109,16 +109,19 @@ Now, this may be too simple, so we can add a "descriptor" that allows you to sta
 
 ## TO DO
 
-- Add nginx proxy :
-    - /static (local files?)
-    - /admin (admin server)
-    - /api (api server)
- 
+Add a source administration application page.
+This should just allow very minimal CRUD operations over a list of source repos.
 
+Create a mechanism for cloning a repo based on the source status.
 
-- Add REPO admin page
-- ... moar
+We probably don't want to depend on DNS initially, however, since it's kind of a pain.
+We should be able to have subpath hosting:
 
+    /asciilab/ -> current localhost:8080
+    /my_repo
+    /my_repo2
+
+Any admin can probably setup proxies to the main server
 
 Consider an integrated smoke testing suite.
 
