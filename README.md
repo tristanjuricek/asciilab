@@ -88,23 +88,36 @@ Personally, given that I'm _also_ not using AOP, this makes `@ConfigurationPrope
 
 ## Product Concepts
 
+ASCIILab enables formal publication workflows for articles and reports of internal review.
+By treating content like source code, tooling like branching and review, etc, is made easy.
+
+This is not just another static website generation system, but a way to wean a large group from thinking a Wiki is all they need.
+When someone wants to float a concept, like a new architecture, any reports and presentations should look professional.
+They should also adhere to a company style and identity.
+Reviews should annotate the pure content, and not get lost in style details.
+
+Output of publications should include:
+
+- Technical documentation website
+- Blogs
+- PDF reports
+- Presentations
+
+[Asciidoc](https://asciidoc.org) is the basis for how content will be generated.
+
+NOTE: The name "asciilab" is mostly just a placeholder.
+
 Two versions:
 
-1. Open Source (single Git repo)
-2. Enterprise (protected pages, auth, search, etc)
+1. Community open source (pretty much git repo -> stuff and that's it.)
+2. Enterprise (RBAC, etc)
 
-Value proposition:
 
-The idea is that a group chooses this over, say, a stupid Wiki server like Confluence. (Wikis! Booo.)
+## Design Ideas
 
-The primary workflow is just simply to push changes to a master branch in a repo.
+An "adminstration" application should guide people on how to create a publication.
 
-Repo setup:
-
-    index.adoc <- literally your home page
-    sub_dir/index.adoc <- becomes the index of a web page
-
-Now, this may be too simple, so we can add a "descriptor" that allows you to state "hey this is for the website".
+For a blog, they should basically indicate how articles are structured.
 
 
 ## TO DO
