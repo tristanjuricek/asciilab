@@ -114,14 +114,13 @@ This should just allow very minimal CRUD operations over a list of source repos.
 
 Create a mechanism for cloning a repo based on the source status.
 
-We probably don't want to depend on DNS initially, however, since it's kind of a pain.
-We should be able to have subpath hosting:
+Generate simple HTML files from the underlying repo.
 
-    /asciilab/ -> current localhost:8080
-    /my_repo
-    /my_repo2
+Generate the nginx configuration for each new repo.
 
-Any admin can probably setup proxies to the main server
+Allow underlying repo to be updated via a webhook in Github or GitLab.
+
+Figure out how to configure styling (expose "templates" repos?)
 
 Consider an integrated smoke testing suite.
 
