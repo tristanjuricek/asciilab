@@ -3,7 +3,8 @@ package com.tristanjuricek.asciilab.admin
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.singleton
-import com.tristanjuricek.asciilab.admin.handlers.HandleListSources
+import com.tristanjuricek.asciilab.admin.handlers.SourceHandlers
+import com.tristanjuricek.asciilab.admin.views.CreateSourceView
 import com.tristanjuricek.asciilab.admin.views.SourcesView
 import com.tristanjuricek.asciilab.api.client.APIClient
 import com.tristanjuricek.asciilab.api.client.APIWebClientImpl
@@ -23,7 +24,9 @@ fun kodein(application: Application) = Kodein {
         }
         APIWebClientImpl(application.environment.config.property("api.url").getString(), httpClient)
     }
-    bind<HandleListSources>() with singleton { HandleListSources(this) }
+    bind<SourceHandlers>() with singleton { SourceHandlers(this) }
+
+    bind<CreateSourceView>() with singleton { CreateSourceView() }
     bind<SourcesView>() with singleton { SourcesView() }
 }
 

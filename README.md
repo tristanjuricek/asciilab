@@ -91,17 +91,36 @@ For a blog, they should basically indicate how articles are structured.
 
 ## TO DO
 
-Create minimal "add source" page.
+### Proof of Concept
 
-Create a mechanism for cloning a repo based on the source status.
+Add ability to delete a source. 
 
-Generate simple HTML files from the underlying repo.
+Figure out a task management solution for doing "heavy" tasks.
 
-Generate the nginx configuration for each new repo.
+Implement a trigger when a source is created to cloning the repo.
 
-Allow underlying repo to be updated via a webhook in Github or GitLab.
+Add trigger to generate PDF for articles in the repo after being cloned.
 
-Figure out how to configure styling (expose "templates" repos?)
+Generate the nginx configuration for new sources.
+
+Get a webhook from Github to our app that will update the PDF on push.
+
+
+### Finishing steps
 
 Consider an integrated smoke testing suite.
+
+Need a localization mechanism.
+
+Need a link management mechanism, very much dependent upon the app config.
+
+
+### Design Iteration 1
+
+Need a design document to flesh out the product concept.
+Identify personas, and create stories on how they will discover, and use, and value, the system.
+Try to figure out a way to get feedback from a prospective user quickly.
+
+
+
 

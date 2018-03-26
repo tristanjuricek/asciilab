@@ -16,7 +16,7 @@ plugins {
 extra["kotlin.version"] = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 
 application {
-    mainClassName = "com.tristanjuricek.asciilab.admin.AdminApplicationKt"
+    mainClassName = "io.ktor.server.netty.DevelopmentEngine"
 }
 
 tasks {
