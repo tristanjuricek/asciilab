@@ -44,46 +44,15 @@ We may want to configure a little web application that provides the ability to i
 
 ### Decisions, Decisions
 
-#### Using Kotlin-based views for admin
+#### Replaced Spring Webflux with ktor
 
-In some ways this is an experiment, trying to limit the number of tools and languages in use down to: Just Use Kotlin.
-The View templates are really just functions that write directly to a writer.
-Thus, there is no "load script and cache it" kind of thing going on.
-And, it's awfully nice to have a real language for doing views: we can add complex configuraitons, etc, with pretty minimal pain.
+Spring 5 introduced Webflux, which piqued my interest, having had some experience with Spring in the past.
+The practical matter, however, is that reactive APIs are simply much more challenging then coroutines.
+I found myself regularly getting surprised by behaviors, and then realizing I didn't have the mental model quite right in my head.
+In the end, this can only create more serious bugs and problems over time.
 
-The disadvantage is that we're really rolling new territory in terms of output writing performance.
-I have no idea if this is going to be a problem yet at all.
-So I suspect as things grow we'll need to figure out where the bottlenecks are and adjust.
-
-TODO: Blog this decision - benefits vs problems
-
-#### Using blocking JDBC
-
-So, while all the APIs are going to be mostly reactive, it turns out that, well, Java hasn't really standardized on async APIs for JDBC.
-Some projects, like [postgres-async-driver](https://github.com/alaisi/postgres-async-driver) are blazing trails in this area.
-
-The problem, is that I only see basic functionality, and no roadmap.
-So interesting features, like the Copy API are unavailable.
-I'm reticent to jump into a brand new driver since I've used the copy API to completely shift performance of PG interop.
-And when I search the mailing lists for postgres, I really don't see a lot of chatter for async tooling.
-
-So... yeah, going to be slightly "custom" `ReactiveRepository` style interfaces that basically wrap an underlying `Repository`.
-This allows us to stick with our "handler" basically using the `BodyInserter` style API.
-Our reactive implementation will just probably have to manage it's own coroutine context and proxy.
-
-#### NOT Using Spring-Data
-
-I'm continuing an experiment where I'm avoiding all AOP, with all the scanning, etc and automatic proxies etc.
-This means that a lot of Spring projects, like spring data, end up getting skipped.
-We DO want to maintain some consistency, however that will be another project.
-
-TODO: Blog this decision - benefits vs problems
-
-#### Spring Boot's @ConfigProperties Doesn't Allow Idiomatic Usage
-
-See: https://github.com/spring-projects/spring-boot/issues/8762
-
-Personally, given that I'm _also_ not using AOP, this makes `@ConfigurationProperties` kind of a moot point.
+The conversion took a few hours, and there's a couple of weird quirks with JSON rendering.
+Overall, the code is _significantly_ cleaner for simple usage.
 
 
 ## Product Concepts
@@ -122,8 +91,7 @@ For a blog, they should basically indicate how articles are structured.
 
 ## TO DO
 
-Add a source administration application page.
-This should just allow very minimal CRUD operations over a list of source repos.
+Create minimal "add source" page.
 
 Create a mechanism for cloning a repo based on the source status.
 

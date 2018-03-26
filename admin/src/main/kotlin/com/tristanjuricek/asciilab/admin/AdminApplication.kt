@@ -1,52 +1,40 @@
 package com.tristanjuricek.asciilab.admin
 
-import com.tristanjuricek.asciilab.admin.web.view.KotlinViewResolver
-import org.springframework.context.support.GenericApplicationContext
-import org.springframework.http.server.reactive.HttpHandler
-import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
-import org.springframework.web.reactive.config.ViewResolverRegistry
-import org.springframework.web.server.adapter.WebHttpHandlerBuilder
-import reactor.ipc.netty.http.server.HttpServer
-import reactor.ipc.netty.tcp.BlockingNettyContext
+import com.github.salomonbrys.kodein.instance
+import com.tristanjuricek.asciilab.admin.handlers.HandleListSources
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.CallLogging
+import io.ktor.features.DefaultHeaders
+import io.ktor.html.respondHtml
+import io.ktor.routing.get
+import io.ktor.routing.routing
+import kotlinx.html.body
+import kotlinx.html.h1
+import kotlinx.html.head
+import kotlinx.html.title
 
-class AdminApplication {
+fun Application.admin() {
+    theKodein = kodein(this)
 
-    private val httpHandler: HttpHandler
+    install(DefaultHeaders)
+    install(CallLogging)
 
-    private val server: HttpServer
-
-    private var nettyContext: BlockingNettyContext? = null
-
-    var context: GenericApplicationContext = GenericApplicationContext()
-
-    constructor(port: Int = 8082) {
-        context.apply {
-            beans(this).initialize(this)
-            refresh()
+    routing {
+        get("/hello") {
+            call.respondHtml {
+                head {
+                    title("Hello")
+                }
+                body {
+                    h1 { text("Hello, Kotlin") }
+                }
+            }
         }
-
-        server = HttpServer.create(port)
-
-        httpHandler = WebHttpHandlerBuilder
-                .applicationContext(context)
-                .build()
+        get("/sources") {
+            theKodein.instance<HandleListSources>().handle(call)
+        }
     }
-
-    fun start() {
-        nettyContext = server.start(ReactorHttpHandlerAdapter(httpHandler))
-    }
-
-    fun startAndAwait() {
-        server.startAndAwait(ReactorHttpHandlerAdapter(httpHandler), { nettyContext = it })
-    }
-
-    fun stop() {
-        nettyContext?.shutdown()
-    }
-
-}
-
-fun main(args: Array<String>) {
-    AdminApplication().startAndAwait()
 }
 

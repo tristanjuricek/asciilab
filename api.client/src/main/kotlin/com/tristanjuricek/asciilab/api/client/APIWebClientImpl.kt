@@ -1,42 +1,41 @@
 package com.tristanjuricek.asciilab.api.client
 
 import com.tristanjuricek.asciilab.api.model.Source
-import org.springframework.http.MediaType
-import org.springframework.web.reactive.function.BodyInserters
-import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.bodyToFlux
-import org.springframework.web.reactive.function.client.bodyToMono
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
+import com.tristanjuricek.asciilab.api.model.Sources
+import io.ktor.client.HttpClient
+import io.ktor.client.call.call
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.url
+import io.ktor.http.*
+import java.net.URL
 
-class APIWebClientImpl(private val webClient: WebClient) : APIClient {
+class APIWebClientImpl(private val baseUrl: String, private val httpClient: HttpClient) : APIClient {
 
-    override fun listSources(): Flux<Source> =
-        webClient.get()
-                .uri("/sources")
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux()
+    override suspend fun listSources(): List<Source> {
+        val sources = httpClient.get<Sources>(buildUrl("/sources"))
+        return sources.sources
+    }
 
-    override fun createSource(source: Mono<Source>): Mono<Void> =
-            webClient.post()
-                    .uri("/sources")
-                    .body(BodyInserters.fromObject(source))
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToMono()
+    override suspend fun createSource(source: Source) {
+        httpClient.post<Unit> {
+            url(buildUrl("/sources"))
+            contentType(ContentType.Application.Json)
+            body = source
+        }
+    }
 
-    override fun findSource(id: Int): Mono<Source> =
-            webClient.get()
-                    .uri("/sources/{id}", id)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToMono()
+    override suspend fun findSource(id: Int): Source? {
+        return httpClient.get(buildUrl("/sources/$id"))
+    }
 
-    override fun deleteSource(id: Int): Mono<Void> =
-            webClient.delete()
-                    .uri("/sources/{id}", id)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToMono()
+    override suspend fun deleteSource(id: Int) {
+        httpClient.call(buildUrl("/sources/$id")) {
+            method = HttpMethod.Delete
+        }
+    }
+
+    private fun buildUrl(path: String): URL {
+        return URL(baseUrl + path)
+    }
 }

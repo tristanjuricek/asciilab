@@ -1,78 +1,48 @@
 package com.tristanjuricek.asciilab.api
 
+import com.github.salomonbrys.kodein.instance
+import com.tristanjuricek.asciilab.api.model.Sources
+import com.tristanjuricek.asciilab.api.repository.SourceRepository
 import com.tristanjuricek.asciilab.api.repository.schema.initializeSchema
-import org.apache.commons.dbcp2.DriverManagerConnectionFactory
-import org.apache.commons.dbcp2.PoolableConnection
-import org.apache.commons.dbcp2.PoolableConnectionFactory
-import org.apache.commons.dbcp2.PoolingDataSource
-import org.apache.commons.pool2.impl.GenericObjectPool
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.gson.gson
+import io.ktor.request.receive
+import io.ktor.response.respond
+import io.ktor.routing.delete
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.Database
-import org.springframework.context.support.GenericApplicationContext
-import org.springframework.http.server.reactive.HttpHandler
-import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
-import org.springframework.web.server.adapter.WebHttpHandlerBuilder
-import reactor.ipc.netty.http.server.HttpServer
-import reactor.ipc.netty.tcp.BlockingNettyContext
 
-class APIApplication {
 
-    private val httpHandler: HttpHandler
+fun Application.api() {
+    initDatabaseDriver()
+    val dataSource = createDataSource(environment.config.property("db.uri").getString())
+    Database.connect(dataSource)
+    initializeSchema()
 
-    private val server: HttpServer
-
-    private var nettyContext: BlockingNettyContext? = null
-
-    private val dataSource: PoolingDataSource<PoolableConnection>
-
-    constructor(port: Int = 8081) {
-        val context = GenericApplicationContext().apply {
-            beans(this).initialize(this)
-            refresh()
+    install(ContentNegotiation) {
+        gson {
         }
-
-        server = HttpServer.create(port)
-
-        httpHandler = WebHttpHandlerBuilder
-                .applicationContext(context)
-                .build()
-
-        initDatabaseDriver()
-        dataSource = createDataSource(context.getBean(DbConfig::class.java))
-        Database.connect(dataSource)
-
-        initializeSchema()
     }
-
-    private fun initDatabaseDriver() {
-        Class.forName("org.postgresql.Driver")
+    routing {
+        get("/sources") {
+            call.respond(Sources(kodein.instance<SourceRepository>().findAll()))
+        }
+        post("/sources") {
+            kodein.instance<SourceRepository>().save(call.receive())
+            call.respond(emptyMap<String, Any>())
+        }
+        get("/sources/{id}") {
+            call.respond(kodein.instance<SourceRepository>().findByID(call.parameters["id"]!!.toInt()) ?: emptyMap<String, Any>())
+        }
+        delete("/sources/{id}") {
+            kodein.instance<SourceRepository>().deleteByID(call.parameters["id"]!!.toInt())
+            call.respond(emptyMap<String, Any>())
+        }
     }
-
-    private fun createDataSource(dbConfig: DbConfig): PoolingDataSource<PoolableConnection> {
-        val connectionFactory = DriverManagerConnectionFactory(dbConfig.uri, null)
-
-        val poolableConnectionFactory = PoolableConnectionFactory(connectionFactory, null)
-
-        val connectionPool = GenericObjectPool<PoolableConnection>(poolableConnectionFactory)
-        poolableConnectionFactory.pool = connectionPool
-
-        return PoolingDataSource(connectionPool)
-    }
-
-    fun start() {
-        nettyContext = server.start(ReactorHttpHandlerAdapter(httpHandler))
-    }
-
-    fun startAndAwait() {
-        server.startAndAwait(ReactorHttpHandlerAdapter(httpHandler), { nettyContext = it })
-    }
-
-    fun stop() {
-        nettyContext?.shutdown()
-        dataSource.close()
-    }
-}
-
-fun main(args: Array<String>) {
-    APIApplication().startAndAwait()
 }
 

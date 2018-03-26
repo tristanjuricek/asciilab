@@ -2,41 +2,33 @@ package com.tristanjuricek.asciilab.api.repository
 
 import com.tristanjuricek.asciilab.api.model.Source
 import com.tristanjuricek.asciilab.api.repository.schema.SourceEntity
-import kotlinx.coroutines.experimental.reactor.flux
-import kotlinx.coroutines.experimental.reactor.mono
 import org.jetbrains.exposed.sql.transactions.transaction
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 
 
 class JDBCSourceRepository : SourceRepository {
 
-    override fun deleteByID(id: Int): Mono<Unit> = mono {
+    override fun deleteByID(id: Int) {
         transaction {
             SourceEntity[id].delete()
         }
-        null
     }
 
-    override fun findAll(): Flux<Source> = flux {
-        val sources = transaction {
+    override fun findAll(): List<Source> {
+        return transaction {
             SourceEntity.all()
                     .map { it.toModel() }
                     .toList() // I'm pretty sure we need to allocate these things
         }
-        for (source in sources) {
-            send(source)
-        }
     }
 
-    override fun findByID(id: Int): Mono<Source?> = mono {
-        transaction {
+    override fun findByID(id: Int): Source? {
+        return transaction {
             SourceEntity.findById(id)?.toModel()
         }
     }
 
-    override fun save(source: Source): Mono<Source> = mono {
-        transaction {
+    override fun save(source: Source): Source {
+        return transaction {
             when (source.id) {
                 -1 -> SourceEntity.new {
                     name = source.name

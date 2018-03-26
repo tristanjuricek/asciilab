@@ -1,16 +1,14 @@
 package com.tristanjuricek.asciilab.api.client
 
 import com.tristanjuricek.asciilab.api.model.Source
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 
 interface APIClient {
 
-    fun listSources(): Flux<Source>
+    suspend fun listSources(): List<Source>
 
-    fun createSource(source: Mono<Source>): Mono<Void>
+    suspend fun createSource(source: Source)
 
-    fun findSource(id: Int): Mono<Source>
+    suspend fun findSource(id: Int): Source?
 
-    fun deleteSource(id: Int): Mono<Void>
+    suspend fun deleteSource(id: Int)
 }

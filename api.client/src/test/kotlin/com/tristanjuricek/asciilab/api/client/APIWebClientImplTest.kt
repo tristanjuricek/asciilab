@@ -3,19 +3,28 @@ package com.tristanjuricek.asciilab.api.client
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.tristanjuricek.asciilab.api.model.Source
+import com.tristanjuricek.asciilab.api.model.Sources
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
+import io.ktor.client.features.json.GsonSerializer
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.JsonSerializer
+import io.ktor.content.IncomingContent
+import io.ktor.content.OutgoingContent
+import io.ktor.content.TextContent
+import io.ktor.http.ContentType
+import kotlinx.coroutines.experimental.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.*
-import org.springframework.web.reactive.function.client.WebClient
-import reactor.core.publisher.Mono
-import reactor.test.StepVerifier
+import kotlin.reflect.KClass
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class APIWebClientImplTest {
 
     private lateinit var mockWebServer: MockWebServer
 
-    private lateinit var webClient: WebClient
+    private lateinit var httpClient: HttpClient
 
     private lateinit var apiClient: APIClient
 
@@ -24,8 +33,14 @@ class APIWebClientImplTest {
     @BeforeAll
     fun setup() {
         mockWebServer = MockWebServer()
-        webClient = WebClient.create(mockWebServer.url("/").toString())
-        apiClient = APIWebClientImpl(webClient)
+
+        httpClient = HttpClient(Apache) {
+            install(JsonFeature) {
+                serializer = GsonSerializer()
+            }
+        }
+
+        apiClient = APIWebClientImpl(mockWebServer.url("/").toString(), httpClient)
     }
 
     @AfterAll
@@ -40,31 +55,28 @@ class APIWebClientImplTest {
                 Source(2, "second", "http://example.com/second")
         )
 
-        val json = objectMapper.writeValueAsString(sources)
+        val json = objectMapper.writeValueAsString(Sources(sources))
 
         mockWebServer.enqueue(MockResponse()
                 .addHeader("Content-Type", "application/json")
                 .setBody(json))
 
-        val actual = apiClient.listSources()
+        val actual = runBlocking {
+            apiClient.listSources()
+        }
 
-        StepVerifier.create(actual)
-                .expectNext(sources[0])
-                .expectNext(sources[1])
-                .verifyComplete()
+        Assertions.assertEquals(sources, actual)
     }
 
     @Test
     fun `POST sources will accept a new Source`() {
         mockWebServer.enqueue(MockResponse()
-                .addHeader("Content-Type", "application/json"))
+                .addHeader("Content-Type", "application/json")
+                .setBody("{}"))
 
         val source = Source(name = "test", url = "http://example.com/test")
 
-        val response = apiClient.createSource(Mono.just(source))
-
-        StepVerifier.create(response)
-                .verifyComplete()
+        runBlocking { apiClient.createSource(source) }
     }
 
     @Test
@@ -77,11 +89,11 @@ class APIWebClientImplTest {
                 .addHeader("Content-Type", "application/json")
                 .setBody(json))
 
-        val actual = apiClient.findSource(1)
+        val actual = runBlocking {
+            apiClient.findSource(1)
+        }
 
-        StepVerifier.create(actual)
-                .expectNext(source)
-                .verifyComplete()
+        Assertions.assertEquals(source, actual)
     }
 
     @Test
@@ -89,9 +101,8 @@ class APIWebClientImplTest {
         mockWebServer.enqueue(MockResponse()
                 .addHeader("Content-Type", "application/json"))
 
-        val response = apiClient.deleteSource(1)
-
-        StepVerifier.create(response)
-                .verifyComplete()
+        runBlocking {
+            apiClient.deleteSource(1)
+        }
     }
 }

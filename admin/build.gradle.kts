@@ -11,9 +11,6 @@ buildscript {
 plugins {
     application
     id("org.jetbrains.kotlin.jvm")
-    id("com.github.johnrengelman.shadow") version "2.0.1"
-    id("io.spring.dependency-management") version "1.0.4.RELEASE"
-//    id("org.junit.platform.gradle.plugin") version "1.0.2"
 }
 
 extra["kotlin.version"] = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
@@ -31,32 +28,22 @@ tasks {
     }
 }
 
-dependencyManagement {
-    imports {
-        // Should use Spring IO platform milestone or release when available
-        mavenBom("org.springframework.boot:spring-boot-dependencies:2.0.0.RELEASE")
-    }
-}
-
 dependencies {
+    compile( project(":api.client"))
+
+    compile("com.github.salomonbrys.kodein:kodein:${extra["kodein.version"]}")
+
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
     compile("org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.9")
 
-    compile("org.springframework:spring-webflux")
-    compile("org.springframework:spring-context") {
-        exclude(module = "spring-aop")
-    }
-    compile("io.projectreactor.ipc:reactor-netty")
+    compile("io.ktor:ktor-server-netty:${extra["ktor.version"]}")
+    compile("io.ktor:ktor-html-builder:${extra["ktor.version"]}")
+    compile("io.ktor:ktor-gson:${extra["ktor.version"]}")
 
     compile("org.slf4j:slf4j-api")
-    compile("ch.qos.logback:logback-classic")
+    compile("ch.qos.logback:logback-classic:${extra["logback.version"]}")
 
-    compile("com.fasterxml.jackson.module:jackson-module-kotlin")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-
-    testCompile("io.projectreactor:reactor-test")
-
-    testCompile("org.junit.jupiter:junit-jupiter-api")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine")
+    testCompile("org.junit.jupiter:junit-jupiter-api:${extra["junit-jupiter.version"]}")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:${extra["junit-jupiter.version"]}")
 }
