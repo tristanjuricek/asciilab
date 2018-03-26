@@ -27,6 +27,9 @@ fun Application.admin() {
         post("/sources/new") {
             theKodein.instance<SourceHandlers>().createSource(call)
         }
+        post("/sources/delete") {
+            theKodein.instance<SourceHandlers>().deleteSource(call)
+        }
     }
 }
 

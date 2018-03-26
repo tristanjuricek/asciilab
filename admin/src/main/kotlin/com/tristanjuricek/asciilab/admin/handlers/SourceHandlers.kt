@@ -10,6 +10,7 @@ import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import io.ktor.http.Parameters
 import io.ktor.request.receive
+import io.ktor.request.receiveParameters
 import io.ktor.response.respondRedirect
 import kotlinx.coroutines.experimental.runBlocking
 
@@ -34,6 +35,12 @@ class SourceHandlers(kodein: Kodein) {
         val parameters = call.receive<Parameters>()
         val source = Source(name = parameters["name"]!!, url = parameters["url"]!!)
         apiClient.createSource(source)
+        call.respondRedirect("/asciilab/admin/sources")
+    }
+
+    fun deleteSource(call: ApplicationCall) = runBlocking {
+        val parameters = call.receiveParameters()
+        apiClient.deleteSource(parameters["id"]?.toInt() ?: throw IllegalStateException("id must be specified"))
         call.respondRedirect("/asciilab/admin/sources")
     }
 }
