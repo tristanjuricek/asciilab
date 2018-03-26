@@ -95,10 +95,11 @@ For a blog, they should basically indicate how articles are structured.
 
 Add ability to delete a source. 
 
-Figure out a task management solution for doing "heavy" tasks.
+Add "InternalRepo" model concept (a local url with a Source reference)
+Create this repo when ready, but immediately hand it off to another thread for doing the actual work.
+(So there needs to be a `ready` state in the DB.)
 
-Implement a trigger when a source is created to cloning the repo.
-
+Add "GeneratedPDF" model concept for each article document discovered in the internal repo.
 Add trigger to generate PDF for articles in the repo after being cloned.
 
 Generate the nginx configuration for new sources.
