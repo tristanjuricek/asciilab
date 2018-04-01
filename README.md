@@ -54,6 +54,12 @@ In the end, this can only create more serious bugs and problems over time.
 The conversion took a few hours, and there's a couple of weird quirks with JSON rendering.
 Overall, the code is _significantly_ cleaner for simple usage.
 
+#### Ditched DI via Kodein for ... an object
+
+The 5.0.0 release of kodein had a number of documentation bugs, which made me ponder if the API was really that useful.
+_TL;DR_: no, not really necessary.
+So I ripped it out and ... am using a Config object in each server app that just does whatever DI I currently need.
+The end result is that the code base is actually pretty clean.
 
 ## Product Concepts
 
@@ -90,30 +96,6 @@ For a blog, they should basically indicate how articles are structured.
 
 
 ## TO DO
-
-### Proof of Concept
-
-Add ability to delete a source. 
-
-Add "InternalRepo" model concept (a local url with a Source reference)
-Create this repo when ready, but immediately hand it off to another thread for doing the actual work.
-(So there needs to be a `ready` state in the DB.)
-
-Add "GeneratedPDF" model concept for each article document discovered in the internal repo.
-Add trigger to generate PDF for articles in the repo after being cloned.
-
-Generate the nginx configuration for new sources.
-
-Get a webhook from Github to our app that will update the PDF on push.
-
-
-### Finishing steps
-
-Consider an integrated smoke testing suite.
-
-Need a localization mechanism.
-
-Need a link management mechanism, very much dependent upon the app config.
 
 
 ### Design Iteration 1

@@ -1,7 +1,5 @@
 package com.tristanjuricek.asciilab.admin.handlers
 
-import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.instance
 import com.tristanjuricek.asciilab.admin.views.CreateSourceView
 import com.tristanjuricek.asciilab.admin.views.SourcesView
 import com.tristanjuricek.asciilab.api.client.APIClient
@@ -14,13 +12,7 @@ import io.ktor.request.receiveParameters
 import io.ktor.response.respondRedirect
 import kotlinx.coroutines.experimental.runBlocking
 
-class SourceHandlers(kodein: Kodein) {
-
-    private val apiClient: APIClient = kodein.instance()
-
-    private val sourcesView: SourcesView = kodein.instance()
-
-    private val createSourceView: CreateSourceView = kodein.instance()
+class SourceHandlers(private val apiClient: APIClient, private val sourcesView: SourcesView, private val createSourceView: CreateSourceView) {
 
     fun listSources(call: ApplicationCall) = runBlocking {
         val sources = apiClient.listSources()

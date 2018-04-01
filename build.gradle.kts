@@ -10,7 +10,6 @@ allprojects {
     // Dependency version declarations are fixed at the moment.
     extra["jackson.version"] = "2.9.4.1"
     extra["junit-jupiter.version"] = "5.1.0"
-    extra["kodein.version"] = "4.1.0"
     extra["ktor.version"] = "0.9.1"
     extra["logback.version"] = "1.2.3"
 

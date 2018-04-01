@@ -1,10 +1,11 @@
 package com.tristanjuricek.asciilab.api
 
-import com.github.salomonbrys.kodein.instance
+import com.tristanjuricek.asciilab.api.Config.sourceRepository
+import com.tristanjuricek.asciilab.api.Config.sourceRepositoryService
 import com.tristanjuricek.asciilab.api.model.Sources
-import com.tristanjuricek.asciilab.api.repository.SourceRepository
 import com.tristanjuricek.asciilab.api.repository.schema.initializeSchema
 import io.ktor.application.Application
+import io.ktor.application.ApplicationStopping
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
@@ -19,10 +20,14 @@ import org.jetbrains.exposed.sql.Database
 
 
 fun Application.api() {
+    Config.application = this
+
     initDatabaseDriver()
     val dataSource = createDataSource(environment.config.property("db.uri").getString())
     Database.connect(dataSource)
     initializeSchema()
+
+    environment.monitor.subscribe(ApplicationStopping, { _ -> dataSource.close() })
 
     install(ContentNegotiation) {
         gson {
@@ -30,17 +35,17 @@ fun Application.api() {
     }
     routing {
         get("/sources") {
-            call.respond(Sources(kodein.instance<SourceRepository>().findAll()))
+            call.respond(Sources(sourceRepositoryService.findAll()))
         }
         post("/sources") {
-            kodein.instance<SourceRepository>().save(call.receive())
+            sourceRepositoryService.save(call.receive())
             call.respond(emptyMap<String, Any>())
         }
         get("/sources/{id}") {
-            call.respond(kodein.instance<SourceRepository>().findByID(call.parameters["id"]!!.toInt()) ?: emptyMap<String, Any>())
+            call.respond(sourceRepositoryService.findByID(call.parameters["id"]!!.toInt()) ?: emptyMap<String, Any>())
         }
         delete("/sources/{id}") {
-            kodein.instance<SourceRepository>().deleteByID(call.parameters["id"]!!.toInt())
+            sourceRepositoryService.deleteByID(call.parameters["id"]!!.toInt())
             call.respond(emptyMap<String, Any>())
         }
     }

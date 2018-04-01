@@ -4,6 +4,7 @@ import com.tristanjuricek.asciilab.api.model.Source
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.dao.IntIdTable
 
 class SourceEntity(id: EntityID<Int>): IntEntity(id) {
     companion object : IntEntityClass<SourceEntity>(SourceTable)
@@ -16,4 +17,9 @@ class SourceEntity(id: EntityID<Int>): IntEntity(id) {
             name,
             url
     )
+}
+
+object SourceTable : IntIdTable() {
+    val name = text("name")
+    val url = text("url")
 }

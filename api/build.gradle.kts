@@ -6,11 +6,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
 }
 
 repositories {
     maven("https://dl.bintray.com/kotlin/exposed" )
+    maven("https://repo.eclipse.org/content/groups/releases/")
 }
 
 plugins {
@@ -40,7 +42,8 @@ kotlin {
 dependencies {
     compile(project(":api.model"))
 
-    compile("com.github.salomonbrys.kodein:kodein:${extra["kodein.version"]}")
+    compile("org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r")
+
     compile("org.jetbrains.exposed:exposed:0.10.1")
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")

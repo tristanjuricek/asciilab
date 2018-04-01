@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
 }
 
@@ -30,8 +31,6 @@ tasks {
 
 dependencies {
     compile( project(":api.client"))
-
-    compile("com.github.salomonbrys.kodein:kodein:${extra["kodein.version"]}")
 
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
