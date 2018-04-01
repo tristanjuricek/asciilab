@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+    </wildcardResourcePatterns>
+    <bytecodeTargetLevel>
+      <module name="admin_main" target="1.8" />
+      <module name="admin_test" target="1.8" />
+      <module name="api.client_main" target="1.8" />
+      <module name="api.client_test" target="1.8" />
+      <module name="api.model_main" target="1.8" />
+      <module name="api.model_test" target="1.8" />
+      <module name="api_main" target="1.8" />
+      <module name="api_test" target="1.8" />
+      <module name="asciilab_main" target="1.8" />
+      <module name="asciilab_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

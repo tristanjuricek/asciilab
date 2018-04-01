@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/admin/admin.iml" filepath="$PROJECT_DIR$/.idea/modules/admin/admin.iml" group="admin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/admin/admin_main.iml" filepath="$PROJECT_DIR$/.idea/modules/admin/admin_main.iml" group="admin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/admin/admin_test.iml" filepath="$PROJECT_DIR$/.idea/modules/admin/admin_test.iml" group="admin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/api.iml" filepath="$PROJECT_DIR$/.idea/modules/api/api.iml" group="api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api.client/api.client.iml" filepath="$PROJECT_DIR$/.idea/modules/api.client/api.client.iml" group="api.client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api.client/api.client_main.iml" filepath="$PROJECT_DIR$/.idea/modules/api.client/api.client_main.iml" group="api.client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api.client/api.client_test.iml" filepath="$PROJECT_DIR$/.idea/modules/api.client/api.client_test.iml" group="api.client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api.model/api.model.iml" filepath="$PROJECT_DIR$/.idea/modules/api.model/api.model.iml" group="api.model" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api.model/api.model_main.iml" filepath="$PROJECT_DIR$/.idea/modules/api.model/api.model_main.iml" group="api.model" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api.model/api.model_test.iml" filepath="$PROJECT_DIR$/.idea/modules/api.model/api.model_test.iml" group="api.model" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/api_main.iml" filepath="$PROJECT_DIR$/.idea/modules/api/api_main.iml" group="api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/api/api_test.iml" group="api" />
+      <module fileurl="file://$PROJECT_DIR$/asciilab.iml" filepath="$PROJECT_DIR$/asciilab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/asciilab_main.iml" filepath="$PROJECT_DIR$/.idea/modules/asciilab_main.iml" group="asciilab" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/asciilab_test.iml" filepath="$PROJECT_DIR$/.idea/modules/asciilab_test.iml" group="asciilab" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/docker/docker.iml" filepath="$PROJECT_DIR$/.idea/modules/docker/docker.iml" group="docker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/testing/testing.iml" filepath="$PROJECT_DIR$/.idea/modules/testing/testing.iml" group="testing" />
+    </modules>
+  </component>
+</project>

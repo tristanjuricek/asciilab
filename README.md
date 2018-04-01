@@ -1,9 +1,10 @@
 # AsciiLab
 
-Making it easy to version Asciidoctor in Git and convert to:
+## NOTE THIS PROJECT IS ABANDONED
 
--> An intranet!
--> A PDF!
+This was some explorations in various ideas using Kotlin to maybe build out tools for publishing asciidoc docs.
+I'm abandoning it but leaving the repo in place more as a kind of notebook of ideas of my own.
+
 
 
 ## Architecture
